@@ -1,0 +1,4 @@
+build:avr --crosstool_top=@arduboy//toolchain:avr_suite
+build:avr --cpu=avr
+
+build:avr --host_crosstool_top=@bazel_tools//tools/cpp:toolchain

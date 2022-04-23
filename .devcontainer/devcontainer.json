@@ -1,0 +1,78 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.224.3/containers/debian
+{
+	"name": "Debian",
+	"build": {
+		"dockerfile": "Dockerfile",
+		// Update 'VARIANT' to pick an Debian version: bullseye, buster
+		// Use bullseye on local arm64/Apple Silicon.
+		"args": {
+			"VARIANT": "bullseye"
+		}
+	},
+	// Set *default* container specific settings.json values on container create.
+	"settings": {
+		"bsv.bazel.buildFlags": [
+			"--config=esp32",
+		],
+		"bsv.bazel.testFlags": [],
+		"bsv.bes.enabled": false,
+		"bsv.bzl.codesearch.enabled": false,
+		"bsv.bzl.invocation.buildEventPublishAllActions": false,
+		"bsv.bzl.invocation.enabled": false,
+		"bsv.bzl.invocation.invokeWithBuildEventStreaming": false,
+		"bsv.bzl.lsp.enableCodelensStarlarkDebug": false,
+		"bsv.bzl.lsp.enableCodelensRun": false,
+		"bsv.bzl.remoteCache.enabled": false,
+		"bsv.bzl.starlarkDebugger.enabled": false,
+		"clangd.path": "/usr/bin/clangd-12",
+		"clangd.arguments": [
+			"-log=verbose",
+			"-pretty",
+			"--background-index",
+		],
+		"clangd.onConfigChanged": "restart",
+		"editor.formatOnSave": true,
+		// Update this field with any new Bazel targets that need compilation database generation
+		"bsv.cc.compdb.targets": [
+			"//:watch",
+		],
+		"multiCommand.commands": [
+			{
+				"command": "multiCommand.generateCcWithBazelAndRestartClangderror",
+				"sequence": [
+					"bsv.cc.compdb.generate",
+					"clangd.restart"
+				]
+			}
+		],
+	},
+	// Add the IDs of extensions you want installed when the container is created.
+	"extensions": [
+		// Editor
+		"vscodevim.vim",
+		// Markdown
+		"yzhang.markdown-all-in-one",
+		// C/C++
+		"notskm.clang-tidy",
+		"christian-kohler.path-intellisense",
+		"llvm-vs-code-extensions.vscode-clangd",
+		// Bazel
+		"stackbuild.bazel-stack-vscode",
+		"stackbuild.bazel-stack-vscode-cc",
+		"augustocdias.tasks-shell-input",
+		"ryuta46.multi-command",
+		"coolchyni.beyond-debug",
+	],
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// "forwardPorts": [],
+	// Uncomment to use the Docker CLI from inside the container. See https://aka.ms/vscode-remote/samples/docker-from-docker.
+	// "mounts": [ "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind" ],
+	// Uncomment when using a ptrace-based debugger like C++, Go, and Rust
+	// "runArgs": [ "--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined" ],
+	// Comment out to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
+	"remoteUser": "vscode",
+	"features": {
+		"github-cli": "latest"
+	}
+}

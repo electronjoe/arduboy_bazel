@@ -30,3 +30,11 @@
 *.exe
 *.out
 *.app
+
+# Bazel build temp outputs
+bazel-*
+compile_commands.json
+
+# Artifacts commonly in root for transfer and flashing
+watch.bin
+watch.partitions.bin

@@ -1,0 +1,34 @@
+load("@rules_cc//cc:defs.bzl", "cc_binary")
+
+package(default_visibility = ["//visibility:public"])
+
+cc_binary(
+    name = "watch",
+    srcs = ["@arduino_esp32//:cores/esp32/main.cpp"],  # main entry point.
+    deps = [
+        "//src:watch",
+        "@arduino_esp32//:core_c_lib",
+        "@arduino_esp32//:core_lib",
+    ],
+)
+
+# Thanks to https://github.com/simonhorlick/bazel_esp32
+genrule(
+    name = "gen_image",
+    srcs = [":watch"],
+    outs = ["watch.bin"],
+    cmd = "python $(location @arduino_esp32//:esptool.py) --chip esp32 elf2image --flash_mode dio --flash_freq 80m --flash_size 4MB -o \"$@\" \"$<\"",
+    tools = ["@arduino_esp32//:esptool.py"],
+)
+
+# Thanks to https://github.com/simonhorlick/bazel_esp32
+genrule(
+    name = "gen_partitions",
+    srcs = [],
+    outs = ["watch.partitions.bin"],
+    cmd = "python $(location @arduino_esp32//:gen_esp32part.py) $(location @arduino_esp32//:tools/partitions/min_spiffs.csv) \"$@\"",
+    tools = [
+        "@arduino_esp32//:gen_esp32part.py",
+        "@arduino_esp32//:tools/partitions/min_spiffs.csv",
+    ],
+)
