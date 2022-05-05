@@ -1,7 +1,7 @@
 workspace(name = "arduboy")
 
-load("@//:deps.bzl", "bazel_esp32_dependencies", "watch_dependencies")
+load("@//:deps.bzl", "arduboy_dependencies", "arduinocore_avr_dependencies")
 
-bazel_esp32_dependencies()
+arduinocore_avr_dependencies()
 
-watch_dependencies()
+arduboy_dependencies()

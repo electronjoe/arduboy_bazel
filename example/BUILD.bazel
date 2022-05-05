@@ -5,3 +5,19 @@ cc_binary(
     srcs = ["main.cpp"],
     # Add any needed cc options here for your specific platform
 )
+
+cc_library(
+    name = "buttons_lib",
+    srcs = ["buttons.cpp"],
+    deps = ["@arduboy2"],
+)
+
+cc_binary(
+    name = "buttons",
+    srcs = ["@arduinocore_avr//:cores/arduino/main.cpp"],  # main must depend on the library containing setup and loop.
+    visibility = ["//visibility:public"],
+    deps = [
+        ":buttons_lib",
+        "@arduinocore_avr//:cores_arduino",
+    ],
+)

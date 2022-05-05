@@ -1,0 +1,36 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+package(default_visibility = ["//visibility:public"])
+
+exports_files(["cores/arduino/main.cpp"])
+
+cc_library(
+    name = "eeprom",
+    hdrs = ["libraries/EEPROM/src/EEPROM.h"],
+    includes = ["libraries/EEPROM/src/"],
+)
+
+cc_library(
+    name = "cores_arduino",
+    srcs = glob([
+        "cores/arduino/*.cpp",
+        "cores/arduino/*.c",
+    ]),
+    hdrs = glob([
+        "cores/arduino/*.h",
+    ] + [
+        "cores/arduino/new",
+    ]),
+    includes = [
+        "cores/arduino/",
+    ],
+    deps = [
+        ":leonardo_pins_arduino",
+    ],
+)
+
+cc_library(
+    name = "leonardo_pins_arduino",
+    hdrs = ["variants/leonardo/pins_arduino.h"],
+    includes = ["variants/leonardo/"],
+)
